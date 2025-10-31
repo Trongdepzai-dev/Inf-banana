@@ -1,13 +1,15 @@
 import { GoogleGenAI } from '@google/genai';
 import type { TextGenerationRequest, ImageEditRequest, GeneratedImage, UploadedImage, ImageStyle } from '../types';
 
-// The prompt enhancement feature remains, using the Gemini API as it's a separate functionality.
-const genAI = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 const API_BASE_URL = 'https://api.whomeai.com/v1';
 const DEMO_API_KEY = 'sk-demo';
 
 export const enhancePrompt = async (prompt: string): Promise<string> => {
+  if (!process.env.API_KEY) {
+    throw new Error("Khóa API của Google AI chưa được cấu hình. Tính năng nâng cao mô tả không khả dụng.");
+  }
+  const genAI = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
   if (!prompt) {
     return '';
   }
@@ -24,7 +26,7 @@ export const enhancePrompt = async (prompt: string): Promise<string> => {
     return response.text.trim();
   } catch (error) {
     console.error("Error enhancing prompt:", error);
-    throw new Error("Failed to get an enhancement from the AI. Please try again.");
+    throw new Error("Không thể nhận được sự cải tiến từ AI. Vui lòng thử lại.");
   }
 };
 
