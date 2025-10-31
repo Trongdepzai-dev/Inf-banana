@@ -1,0 +1,5 @@
+{
+  "name": "AI Image Generator",
+  "description": "A powerful and intuitive web application for generating and editing images from text prompts using advanced AI models. Create stunning visuals from text or by providing reference images.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-g" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Image Generator V2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-primary': '#4f46e5',
+              'brand-secondary': '#7c3aed',
+              'base-100': '#0f172a',
+              'base-200': '#1e293b',
+              'base-300': '#334155',
+              'content-100': '#e2e8f0',
+              'content-200': '#94a3b8',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      @keyframes glow {
+        0% { box-shadow: 0 0 8px #4f46e5, 0 0 16px #4f46e5; }
+        50% { box-shadow: 0 0 12px #7c3aed, 0 0 24px #7c3aed; }
+        100% { box-shadow: 0 0 8px #4f46e5, 0 0 16px #4f46e5; }
+      }
+
+      .generate-button-glow {
+        box-shadow: 0 0 8px rgba(79, 70, 229, 0.5), 0 0 16px rgba(79, 70, 229, 0.5);
+      }
+      
+      .generate-button-glow:not(:disabled):hover {
+         animation: glow 3s ease-in-out infinite;
+      }
+
+      body {
+          background-color: #0f172a;
+          background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+          background-size: 25px 25px;
+      }
+      
+      .generative-loader {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 28px;
+          width: 60px;
+      }
+      .generative-loader span {
+          display: block;
+          background: white;
+          width: 5px;
+          height: 100%;
+          border-radius: 3px;
+          margin: 0 2px;
+          animation: generative-anim 1.2s infinite ease-in-out;
+      }
+      .generative-loader span:nth-child(2) { animation-delay: 0.1s; }
+      .generative-loader span:nth-child(3) { animation-delay: 0.2s; }
+      .generative-loader span:nth-child(4) { animation-delay: 0.3s; }
+      .generative-loader span:nth-child(5) { animation-delay: 0.4s; }
+
+      @keyframes generative-anim {
+          0%, 60%, 100% { transform: scaleY(0.4); opacity: 0.5; }
+          30% { transform: scaleY(1.0); opacity: 1.0; }
+      }
+
+       /* New prompt textarea focus style */
+      .prompt-textarea:focus {
+        border-color: transparent;
+        background-image: linear-gradient(to right, #1e293b, #1e293b), linear-gradient(to bottom, #4f46e5, #7c3aed);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+      }
+      
+      /* Custom Slider Styles */
+      .image-count-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #e2e8f0;
+        border: 2px solid #7c3aed;
+        border-radius: 50%;
+        cursor: pointer;
+        margin-top: -7px; /* You need to specify a margin in Chrome, but not in Firefox */
+        transition: background 0.2s;
+      }
+
+      .image-count-slider:hover::-webkit-slider-thumb {
+        background: #fff;
+      }
+      
+      .image-count-slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: #e2e8f0;
+        border: 2px solid #7c3aed;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .image-count-slider:hover::-moz-range-thumb {
+         background: #fff;
+      }
+
+      .image-count-slider::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 6px;
+        cursor: pointer;
+        background: #334155;
+        border-radius: 5px;
+      }
+
+      .image-count-slider::-moz-range-track {
+        width: 100%;
+        height: 6px;
+        cursor: pointer;
+        background: #334155;
+        border-radius: 5px;
+      }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-base-100 text-content-100">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
