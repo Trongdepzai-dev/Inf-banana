@@ -1,12 +1,13 @@
 import React from 'react';
 import type { GeneratedImage } from '../types';
-import { DownloadIcon } from './Icons';
+import { DownloadIcon, ZoomIcon, CloseIcon } from './Icons';
 
 interface ImageGridProps {
   images: GeneratedImage[];
 }
 
 export const ImageGrid: React.FC<ImageGridProps> = ({ images }) => {
+  const [zoomImage, setZoomImage] = React.useState<GeneratedImage | null>(null);
 
   const handleDownload = (image: GeneratedImage) => {
     const link = document.createElement('a');
@@ -20,8 +21,9 @@ export const ImageGrid: React.FC<ImageGridProps> = ({ images }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-      {images.map((image, index) => (
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {images.map((image, index) => (
         <div key={index} className="group relative overflow-hidden rounded-xl shadow-lg bg-base-200 aspect-[9/16] sm:aspect-auto">
           <img
             src={`data:image/png;base64,${image.b64_json}`}
@@ -35,9 +37,30 @@ export const ImageGrid: React.FC<ImageGridProps> = ({ images }) => {
              <button onClick={() => handleDownload(image)} className="absolute top-4 right-4 p-2 bg-white/10 rounded-full hover:bg-white/20 backdrop-blur-sm transition">
                 <DownloadIcon className="w-5 h-5 text-white" />
             </button>
+            <button onClick={() => setZoomImage(image)} className="absolute top-4 left-4 p-2 bg-white/10 rounded-full hover:bg-white/20 backdrop-blur-sm transition">
+              <ZoomIcon className="w-5 h-5 text-white" />
+            </button>
           </div>
         </div>
-      ))}
-    </div>
+        ))}
+      </div>
+
+      {zoomImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75">
+          <button
+            onClick={() => setZoomImage(null)}
+            className="absolute top-4 right-4 p-2 bg-white/10 rounded-full hover:bg-white/20 backdrop-blur-sm transition"
+            aria-label="Close zoomed image"
+          >
+            <CloseIcon className="w-6 h-6 text-white" />
+          </button>
+          <img
+            src={`data:image/png;base64,${zoomImage.b64_json}`}
+            alt={zoomImage.revised_prompt}
+            className="max-w-full max-h-full object-contain rounded-lg shadow-lg"
+          />
+        </div>
+      )}
+    </>
   );
 };
