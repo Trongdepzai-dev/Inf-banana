@@ -39,7 +39,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   ];
 
   return (
-    <div className="flex flex-col gap-4 bg-base-100/50 p-3 rounded-xl border border-base-300 w-full">
+    <div className="flex flex-col gap-5 bg-base-100/60 p-5 rounded-2xl border border-base-300/50 w-full shadow-xl backdrop-blur-sm">
       {/* Top Row: Count and Dimensions */}
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         {/* Image Count Slider */}
@@ -68,7 +68,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
           <div className="grid grid-cols-2 gap-2">
               <button 
                 onClick={() => onImageSizeChange('1024x1792')} 
-                className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border-2 transition ${imageSize === '1024x1792' ? 'border-brand-primary bg-brand-primary/20' : 'border-base-300 bg-base-100 hover:border-brand-primary/50'}`}
+                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all duration-300 ${imageSize === '1024x1792' ? 'border-brand-primary bg-brand-primary/20 shadow-lg scale-105' : 'border-base-300/50 bg-base-100/80 hover:border-brand-primary/50 hover:shadow-md hover:scale-102'}`}
                 aria-label="Portrait 1024x1792"
               >
                   <PortraitIcon className="w-5 h-5"/>
@@ -76,7 +76,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
               </button>
               <button 
                 onClick={() => onImageSizeChange('1792x1024')} 
-                className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border-2 transition ${imageSize === '1792x1024' ? 'border-brand-primary bg-brand-primary/20' : 'border-base-300 bg-base-100 hover:border-brand-primary/50'}`}
+                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all duration-300 ${imageSize === '1792x1024' ? 'border-brand-primary bg-brand-primary/20 shadow-lg scale-105' : 'border-base-300/50 bg-base-100/80 hover:border-brand-primary/50 hover:shadow-md hover:scale-102'}`}
                 aria-label="Landscape 1792x1024"
               >
                   <LandscapeIcon className="w-5 h-5"/>
@@ -96,10 +96,10 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                <button
                   key={option.id}
                   onClick={() => onStyleChange(style === option.id ? 'none' : option.id)}
-                  className={`flex flex-col items-center justify-center gap-1 p-2 rounded-lg border-2 transition text-sm h-full ${style === option.id ? 'border-brand-primary bg-brand-primary/20 text-content-100' : 'border-base-300 bg-base-100 hover:border-brand-primary/50 text-content-200'}`}
+                  className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl border-2 transition-all duration-300 text-sm h-full ${style === option.id ? 'border-brand-primary bg-brand-primary/20 text-content-100 shadow-lg scale-105' : 'border-base-300/50 bg-base-100/80 hover:border-brand-primary/50 text-content-200 hover:shadow-md hover:scale-102'}`}
                 >
                   {option.icon}
-                  <span className="text-xs">{option.label}</span>
+                  <span className="text-xs font-medium">{option.label}</span>
                 </button>
             ))}
           </div>
@@ -115,10 +115,10 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
              <button
                 key={option.id}
                 onClick={() => onQualityChange(option.id)}
-                className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border-2 transition text-sm ${quality === option.id ? 'border-brand-secondary bg-brand-secondary/20' : 'border-base-300 bg-base-100 hover:border-brand-secondary/50'}`}
+                className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 transition-all duration-300 text-sm ${quality === option.id ? 'border-brand-secondary bg-brand-secondary/20 shadow-lg scale-105' : 'border-base-300/50 bg-base-100/80 hover:border-brand-secondary/50 hover:shadow-md hover:scale-102'}`}
               >
                 <StarIcon fill={quality === option.id} half={option.id === 'hd'} full={option.id === 'ultra'} />
-                <span>{option.label}</span>
+                <span className="font-medium">{option.label}</span>
               </button>
           ))}
         </div>
