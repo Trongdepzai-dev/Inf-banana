@@ -29,6 +29,10 @@ const App: React.FC = () => {
     }
   }, [imageCount]);
 
+  useEffect(() => {
+    fetch('/api/stats/view', { method: 'GET' }).catch(err => console.error('Failed to track page view:', err));
+  }, []);
+
 
   const handleGenerate = useCallback(async () => {
     if (!prompt) {

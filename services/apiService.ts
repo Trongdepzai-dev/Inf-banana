@@ -4,16 +4,34 @@ import type { TextGenerationRequest, ImageEditRequest, GeneratedImage, UploadedI
 const API_BASE_URL = 'https://api.whomeai.com/v1';
 const DEMO_API_KEY = 'sk-demo';
 
-export const enhancePrompt = async (prompt: string): Promise<string> => {
-  if (!process.env.API_KEY) {
+async function getGeminiApiKey(): Promise<string> {
+  try {
+    const response = await fetch('/api/gemini-key');
+    if (response.ok) {
+      const data = await response.json();
+      return data.apiKey;
+    }
+    throw new Error('API key not configured');
+  } catch (error) {
     throw new Error("Khóa API của Google AI chưa được cấu hình. Tính năng nâng cao mô tả không khả dụng.");
   }
-  const genAI = new GoogleGenAI({ apiKey: process.env.API_KEY });
+}
 
+export const enhancePrompt = async (prompt: string): Promise<string> => {
   if (!prompt) {
     return '';
   }
+  
+  let apiKey: string;
+  try {
+    apiKey = await getGeminiApiKey();
+  } catch (error) {
+    throw new Error("Khóa API của Google AI chưa được cấu hình. Tính năng nâng cao mô tả không khả dụng.");
+  }
+  
+  const genAI = new GoogleGenAI({ apiKey });
   const model = 'gemini-2.5-flash';
+  
   try {
     const response = await genAI.models.generateContent({
       model,
@@ -78,7 +96,11 @@ export const generateImagesFromText = async (params: TextGenerationRequest): Pro
         body: JSON.stringify(body),
     });
     
-    return handleApiResponse(response);
+    const result = await handleApiResponse(response);
+    
+    fetch('/api/stats/image', { method: 'POST' }).catch(err => console.error('Failed to track image generation:', err));
+    
+    return result;
 };
 
 export const editImages = async (params: ImageEditRequest): Promise<{ data: GeneratedImage[] }> => {
@@ -113,5 +135,9 @@ export const editImages = async (params: ImageEditRequest): Promise<{ data: Gene
         body: JSON.stringify(body),
     });
 
-    return handleApiResponse(response);
+    const result = await handleApiResponse(response);
+    
+    fetch('/api/stats/image', { method: 'POST' }).catch(err => console.error('Failed to track image generation:', err));
+    
+    return result;
 };
